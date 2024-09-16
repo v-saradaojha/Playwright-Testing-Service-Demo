@@ -1,0 +1,61 @@
+# TODO: Place this file in the .github/workflows folder of your repository
+# This sample assumes the working directory is ./splaywright-testing-service-demo
+name: Get Started sample
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+jobs:
+  test:
+    timeout-minutes: 120
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex: [1, 2, 3, 4]
+        shardTotal: [4]
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 20   
+    - name: Install dependencies
+      working-directory: playwright-testing-service-demo
+      run: npm install
+    - name: Install Playwright Browsers
+      working-directory: playwright-testing-service-demo
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      working-directory: playwright-testing-service-demo
+      # env:
+      #   PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_ACCESS_TOKEN_REPORTING}}
+      #   PLAYWRIGHT_SERVICE_URL: ${{ secrets.PLAYWRIGHT_SERVICE_URL_REPORTING }}
+      #   PLAYWRIGHT_SERVICE_RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}-${{ github.sha }}
+      #   debug: MPTReporter
+      # run: npx playwright test --config=playwright.service.config.ts --workers=30
+      run: npx playwright test --workers=30 --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} 
+    # - uses: actions/upload-artifact@v3
+    #   if: always()
+    #   with:
+    #     name: playwright-report
+    #     path: playwright-testing-service-demo/playwright-report/
+    #     retention-days: 10
+
+    # - name: Comment on PR
+    #   uses: actions/github-script@v5
+    #   if: always()
+    #   with:
+    #     github-token: ${{secrets.GH_TOKEN_FOR_PR_COMMENTS}}
+    #     script: |
+    #       const issue_number = context.issue.number;
+    #       const owner = context.repo.owner;
+    #       const repo = context.repo.repo;
+    #       const body = 'See test results [here](https://playwright.dev)';
+    #       github.rest.issues.createComment({
+    #         owner,
+    #         repo,
+    #         issue_number,
+    #         body
+    #       });
