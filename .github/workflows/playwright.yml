@@ -22,13 +22,13 @@ jobs:
       with:
         node-version: 20   
     - name: Install dependencies
-      working-directory: playwright-testing-service-demo
+      working-directory: playwright-testing-service-demo/
       run: npm install
     - name: Install Playwright Browsers
-      working-directory: playwright-testing-service-demo
+      working-directory: playwright-testing-service-demo/
       run: npx playwright install --with-deps
     - name: Run Playwright tests
-      working-directory: playwright-testing-service-demo
+      working-directory: playwright-testing-service-demo/
       # env:
       #   PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_ACCESS_TOKEN_REPORTING}}
       #   PLAYWRIGHT_SERVICE_URL: ${{ secrets.PLAYWRIGHT_SERVICE_URL_REPORTING }}
