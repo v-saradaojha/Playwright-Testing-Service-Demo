@@ -22,13 +22,13 @@ jobs:
       with:
         node-version: 20   
     - name: Install dependencies
-      working-directory: samples/getstarted
+      working-directory: Samples/GetStarted
       run: npm install
     - name: Install Playwright Browsers
-      working-directory: samples/getstarted
+      working-directory: Samples/GetStarted
       run: npx playwright install --with-deps
     - name: Run Playwright tests
-      working-directory: samples/getstarted
+      working-directory: Samples/GetStarted
       env:
         PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_ACCESS_TOKEN_REPORTING}}
         PLAYWRIGHT_SERVICE_URL: ${{ secrets.PLAYWRIGHT_SERVICE_URL_REPORTING }}
@@ -40,7 +40,7 @@ jobs:
       if: always()
       with:
         name: playwright-report
-        path: samples/getstarted/playwright-report/
+        path: Samples/GetStarted/playwright-report/
         retention-days: 10
 
     # - name: Comment on PR
