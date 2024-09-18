@@ -35,9 +35,11 @@ jobs:
     - name: Install dependencies
       working-directory: Samples/GetStarted
       run: npm install
-    - name: Install Playwright Browsers
-      working-directory: Samples/GetStarted
-      run: npx playwright install --with-deps
+    
+    # - name: Install Playwright Browsers
+    #   working-directory: Samples/GetStarted
+    #   run: npx playwright install --with-deps
+
     - name: Run Playwright tests
       working-directory: Samples/GetStarted
       env:
