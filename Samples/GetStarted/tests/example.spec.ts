@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 // This sample simulates a larger test suite
 const tags = ['@smoke', '@sanity', '@issue'];
 //eastasia test//
-const TEST_ITERATIONS = parseInt(process.env.TEST_ITERATIONS || "10");
+const TEST_ITERATIONS = parseInt(process.env.TEST_ITERATIONS || "20");
 for (let i = 0; i < TEST_ITERATIONS; i++) {
   let tagid = i % 3;
   test('has title ' + i + tags[tagid], async ({ page }) => {
