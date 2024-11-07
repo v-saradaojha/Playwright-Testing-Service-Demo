@@ -7,7 +7,7 @@ import config from './playwright.config';
 export default defineConfig(
   config,
   getServiceConfig(config, {
-    serviceAuthType: 'ENTRA_ID',  
+    serviceAuthType: 'ACCESS_TOKEN',  
     useCloudHostedBrowsers: true,
     timeout: 30000,
     os: ServiceOS.LINUX,
