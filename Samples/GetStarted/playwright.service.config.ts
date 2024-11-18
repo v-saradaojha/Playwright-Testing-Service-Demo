@@ -8,7 +8,7 @@ export default defineConfig(
   config,
   getServiceConfig(config, {
     serviceAuthType: 'ACCESS_TOKEN',  
-    useCloudHostedBrowsers: false,
+    useCloudHostedBrowsers: true,
     timeout: 30000,
     os: ServiceOS.LINUX,
   }),
