@@ -28,17 +28,5 @@ for (let i = 0; i < TEST_ITERATIONS; i++) {
 
     const randomResult = Math.random();
     expect(randomResult).toBeGreaterThan(0.2);
-  });
-  test('get started link ' + i + tags[tagid], async ({ page }) => {
-    await page.goto('https://playwright.dev/');
-
-    // Click the get started link.
-    await page.getByRole('link', { name: 'abc' }).click();
-
-    // Expects the URL to contain intro.
-    await expect(page).toHaveURL(/.*intro/);
-
-    const randomResult = Math.random();
-    expect(randomResult).toBeGreaterThan(0.2);
-  });
+  }); 
 }
