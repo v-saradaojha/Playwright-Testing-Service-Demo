@@ -7,7 +7,9 @@ import config from './playwright.config';
 export default defineConfig(
   config,
   getServiceConfig(config, {
-    serviceAuthType: 'ACCESS_TOKEN',  
+    runId: process.env.PLAYWRIGHT_SERVICE_RUN_ID,
+    runName: "Testing Service Demo" + process.env.PLAYWRIGHT_SERVICE_RUN_ID,
+    serviceAuthType: 'ACCESS_TOKEN',
     useCloudHostedBrowsers: true,
     timeout: 30000,
     os: ServiceOS.LINUX,
