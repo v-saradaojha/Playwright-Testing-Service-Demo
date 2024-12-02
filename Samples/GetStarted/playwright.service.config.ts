@@ -8,7 +8,7 @@ export default defineConfig(
   config,
   getServiceConfig(config, {
     runId: process.env.PLAYWRIGHT_SERVICE_RUN_ID,
-    runName: "Testing Service Demo" + process.env.PLAYWRIGHT_SERVICE_RUN_ID,
+    runName: "Testing Service Demo" + Date.now(),
     serviceAuthType: 'ACCESS_TOKEN',
     useCloudHostedBrowsers: true,
     timeout: 30000,
