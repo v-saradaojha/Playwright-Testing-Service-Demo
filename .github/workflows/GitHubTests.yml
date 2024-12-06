@@ -55,7 +55,7 @@ jobs:
         # debug: MPTReporter
       # run: npx playwright test --config=playwright.service.config.ts --workers=30
       # run: npx playwright test --config=playwright.service.config.ts example.spec.ts --workers=50 --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} 
-      run: npx playwright test --config=playwright.service.config.ts example.spec.ts --workers=100
+      run: npx playwright test --config=playwright.service.config.ts example.spec.ts --workers=10
     - uses: actions/upload-artifact@v3
       if: always()
       with:
