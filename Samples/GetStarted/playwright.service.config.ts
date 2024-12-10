@@ -8,10 +8,10 @@ export default defineConfig(
   config,
   getServiceConfig(config, {
     runId: process.env.PLAYWRIGHT_SERVICE_RUN_ID,
-    runName: "Testing Service Demo" + Date.now(),
+    runName: "Testing Service Demo" + new Date().toLocaleString(),
     serviceAuthType: 'ACCESS_TOKEN',
     useCloudHostedBrowsers: true,
-    timeout: 30000,
+    timeout: 30000,    
     os: ServiceOS.LINUX,
   }),
   {
@@ -20,6 +20,6 @@ export default defineConfig(
     This will override any reporter options specified in the base playwright config.
     If you are using more reporters, please update your configuration accordingly.
     */
-    reporter: [['list'], ['@azure/microsoft-playwright-testing/reporter']],
+    reporter: [['list']],
   }
 );
