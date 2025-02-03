@@ -40,7 +40,7 @@ for (let i = 0; i < 30; i++) {
       const randomResult = Math.random();
       expect(randomResult).toBeGreaterThan(0.2);
   });
-  test('get started link ' + i + tags[tagid], async ({ page }) => {
+  test('has title ' + i + tags[tagid], async ({ page }) => {
       test.skip(i >= 10 && i <= 20 && i % 2 === 0, `Skipping test ${i} as it is an even number between 10 and 20`);
       await page.goto('https://playwright.dev/');
       await expect(page).toHaveTitle(/Playwright/);
