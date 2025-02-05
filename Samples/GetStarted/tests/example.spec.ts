@@ -31,7 +31,7 @@ const tags = ['@smoke', '@sanity', '@issue'];
 //   }); 
 // }
 
-for (let i = 0; i < 25; i++) {
+for (let i = 0; i < 30; i++) {
   let tagid = i % 3;
   test('get started link ' + i + tags[tagid], async ({ page }) => {
       await page.goto('https://playwright.dev/');
