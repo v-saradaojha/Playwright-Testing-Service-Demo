@@ -36,49 +36,61 @@ jobs:
       working-directory: Samples/GetStarted
       run: npm install
     
-    # - name: Install Playwright Browsers
-    #   working-directory: Samples/GetStarted
-    #   run: npx playwright install --with-deps
+  # - name: Install Playwright Browsers
+  #   working-directory: Samples/GetStarted
+  #   run: npx playwright install --with-deps
 
-    - name: Run Playwright tests
-      working-directory: Samples/GetStarted
+    - name: Run Playwright Test - Entraid
+      uses: AzureCLI@2  
+      with:
+        azure-subscription: entra_mi_devops
+        script-type: bash
+        script-location: inlineScript
+        inline-script: |
+          export PLAYWRIGHT_SERVICE_RUN_ID="$(Build.BuildId)-$(Build.BuildNumber)-$(date +'%Y%m%d%H%M%S')"
+          npx playwright test --config=playwright.service.config.ts example.spec.ts --workers=50 --retries=1
+          exit 0
+        working-directory:  Samples/GetStarted
+        timeout-in-minutes: 10
+      continue-on-error: true
       env:
-        #Production Start
-        # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_EASTUS_PROD_ACCESS_TOKEN_REPORTING}}
-        # PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_EASTUS_PROD_URL}}
-        # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_EASTASIA_PROD_ACCESS_TOKEN_REPORTING}}
-        # PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_EASTASIA_PROD_URL}}
-        # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_WESTEUROPE_PROD_ACCESS_TOKEN_REPORTING}}
-        # PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_WESTEUROPE_PROD_URL}}
-        # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_WESTUS3_PROD_ACCESS_TOKEN_REPORTING}}
-        # PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_WESTUS3_PROD_URL}}
-        #Production End
-        #Canary Start
-        # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_EASTUS2EUAP_ACCESS_TOKEN_REPORTING}}
-        # PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_EASTUS2EUAP_URL_REPORTING}}
-        #Canary End
-        #Nightly Start
-        # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_EASTASIA_NIGHTLY_ACCESS_TOKEN_REPORTING}}
-        PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_EASTASIA_NIGHTLY_URL }}
-        # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_EASTUS_NIGHTLY_ACCESS_TOKEN_REPORTING}}
-        # PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_EASTUS_NIGHTLY_URL }}
+        PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_EASTUS2EUAP_URL_REPORTING}}
+        
+    
+    # - name: Run Playwright tests
+    #   working-directory: Samples/GetStarted
+    #   env:
+    #       #Production Start
+    #       # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_EASTUS_PROD_ACCESS_TOKEN_REPORTING}}
+    #       # PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_EASTUS_PROD_URL}}
+    #       # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_EASTASIA_PROD_ACCESS_TOKEN_REPORTING}}
+    #       # PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_EASTASIA_PROD_URL}}
+    #       # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_WESTEUROPE_PROD_ACCESS_TOKEN_REPORTING}}
+    #       # PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_WESTEUROPE_PROD_URL}}
+    #       # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_WESTUS3_PROD_ACCESS_TOKEN_REPORTING}}
+    #       # PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_WESTUS3_PROD_URL}}
+    #       #Production End
+    #       #Canary Start
+    #       # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_EASTUS2EUAP_ACCESS_TOKEN_REPORTING}}
+    #       # PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_EASTUS2EUAP_URL_REPORTING}}
+    #       #Canary End
+    #       #Nightly Start
+    #       # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_EASTASIA_NIGHTLY_ACCESS_TOKEN_REPORTING}}
+    #       PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_EASTASIA_NIGHTLY_URL }}
+    #       PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_EASTUS_NIGHTLY_ACCESS_TOKEN_REPORTING}}
+    #       # PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_EASTUS_NIGHTLY_URL }}        
+    #       #Nightly End
 
-        #ENTRA SETUP START
-        SPN_CLIENTID : ${{ secrets.SPN_CLIENTID }}
-        SPN_CLIENTSECRET : ${{ secrets.SPN_CLIENTSECRET }}
-        AAD_AUTHORITY : ${{ secrets.AAD_AUTHORITY }}
-        #ENTRA SETUP END
-        #Nightly End
+    #       #TEST START
+    #       # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.TEST_ACCESS_TOKEN}}
+    #       # PLAYWRIGHT_SERVICE_URL: ${{ vars.TEST_SERVICE_URL }}
+    #       #TEST END
+    #       PLAYWRIGHT_SERVICE_RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}-${{ github.sha }}
+    #       debug: MPTReporter
+    #     # run: npx playwright test --config=playwright.service.config.ts --workers=30
+    #     # run: npx playwright test --config=playwright.service.config.ts example.spec.ts --workers=50 --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} 
+    #   run: npx playwright test --config=playwright.service.config.ts example.spec.ts --workers=50 --retries=1
 
-        #TEST START
-        # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.TEST_ACCESS_TOKEN}}
-        # PLAYWRIGHT_SERVICE_URL: ${{ vars.TEST_SERVICE_URL }}
-        #TEST END
-        PLAYWRIGHT_SERVICE_RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}-${{ github.sha }}
-        debug: MPTReporter
-      # run: npx playwright test --config=playwright.service.config.ts --workers=30
-      # run: npx playwright test --config=playwright.service.config.ts example.spec.ts --workers=50 --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} 
-      run: npx playwright test --config=playwright.service.config.ts example.spec.ts --workers=50 --retries=1
     - uses: actions/upload-artifact@v4
       if: always()
       with:
