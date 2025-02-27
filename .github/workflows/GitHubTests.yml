@@ -65,8 +65,8 @@ jobs:
         #Nightly End
 
         #TEST START
-        PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.TEST_ACCESS_TOKEN}}
-        PLAYWRIGHT_SERVICE_URL: ${{ vars.TEST_SERVICE_URL }}
+        # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.TEST_ACCESS_TOKEN}}
+        # PLAYWRIGHT_SERVICE_URL: ${{ vars.TEST_SERVICE_URL }}
         #TEST END
         PLAYWRIGHT_SERVICE_RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}-${{ github.sha }}
         debug: MPTReporter
