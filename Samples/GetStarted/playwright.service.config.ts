@@ -9,7 +9,7 @@ export default defineConfig(
   getServiceConfig(config, {
     runId: process.env.PLAYWRIGHT_SERVICE_RUN_ID,
     runName: "Testing Service Demo" + new Date().toLocaleString(),
-    serviceAuthType: 'ENTRA_ID',
+    // serviceAuthType: 'ACCESS_TOKEN',    
     useCloudHostedBrowsers: true,
     timeout: 30000,
     os: ServiceOS.LINUX,
