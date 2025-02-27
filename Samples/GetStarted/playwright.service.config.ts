@@ -3,7 +3,7 @@ import { getServiceConfig, ServiceOS } from '@azure/microsoft-playwright-testing
 import config from './playwright.config';
 
 /* Learn more about service configuration at https://aka.ms/mpt/config */
-
+process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN = process.env.ENTRAID_TOKEN!;
 export default defineConfig(
   config,
   getServiceConfig(config, {
@@ -11,7 +11,7 @@ export default defineConfig(
     runName: "Testing Service Demo" + new Date().toLocaleString(),
     serviceAuthType: 'ACCESS_TOKEN',
     useCloudHostedBrowsers: true,
-    timeout: 30000,    
+    timeout: 30000,
     os: ServiceOS.LINUX,
   }),
   {
