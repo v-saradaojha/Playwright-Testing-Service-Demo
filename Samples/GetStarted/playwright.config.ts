@@ -33,8 +33,8 @@ export default defineConfig({
     // screenshot : 'only-on-failure'
 
     trace: 'on',
-    video:'on',
-    screenshot : 'on'
+    video: 'on',
+    screenshot: 'on'
   },
 
   /* Configure projects for major browsers */
@@ -43,15 +43,15 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] },
-    // },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
 
-    // {
-    //   name: 'webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
 
     /* Test against mobile viewports. */
     // {
