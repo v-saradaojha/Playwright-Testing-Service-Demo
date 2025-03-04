@@ -30,7 +30,7 @@ on:
       workers:
         description: "Number of workers"
         required: false
-        default: 20
+        default: 1
         type: number
       TEST_ITERATIONS:
         description: "Number of test iterations"
