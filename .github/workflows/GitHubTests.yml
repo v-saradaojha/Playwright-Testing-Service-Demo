@@ -7,6 +7,16 @@ on:
   pull_request:
     branches: [ main, master ]
   workflow_dispatch:
+    inputs:
+      environment:
+        description: "Choose the environment"
+        required: true
+        default: "nightly"
+        type: choice
+        options:
+          - prod
+          - nightly
+          - canary
 permissions:
   id-token: write
   contents: read
