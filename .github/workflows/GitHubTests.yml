@@ -56,12 +56,22 @@ jobs:
        echo "Selected region: ${{ github.event.inputs.region }}"
        
          if [[ "${{ github.event.inputs.environment }}" == "prod" ]]; then
-            echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.PLAYWRIGHT_SERVICE_EASTUS_PROD_ACCESS_TOKEN_REPORTING }}" >> $GITHUB_ENV
-            echo "PLAYWRIGHT_SERVICE_URL=${{ vars.PLAYWRIGHT_SERVICE_EASTUS_PROD_URL }}" >> $GITHUB_ENV
+            if [[ "${{ github.event.inputs.region }}" == "eastus" ]]; then             
+              echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.EASTUS_PROD_ACCESS_TOKEN }}" >> $GITHUB_ENV
+              echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTUS_PROD_SERVICE_URL }}" >> $GITHUB_ENV
+            elif [[ "${{ github.event.inputs.region }}" == "eastasia" ]]; then             
+              echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.EASTASIA_PROD_ACCESS_TOKEN }}" >> $GITHUB_ENV
+              echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTASIA_PROD_SERVICE_URL }}" >> $GITHUB_ENV
+            elif [[ "${{ github.event.inputs.region }}" == "westeurope" ]]; then             
+              echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.WESTEUROPE_PROD_ACCESS_TOKEN }}" >> $GITHUB_ENV
+              echo "PLAYWRIGHT_SERVICE_URL=${{ vars.WESTEUROPE_PROD_SERVICE_URL }}" >> $GITHUB_ENV
+            elif [[ "${{ github.event.inputs.region }}" == "westus3" ]]; then             
+              echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.WESTUS3_PROD_ACCESS_TOKEN }}" >> $GITHUB_ENV
+              echo "PLAYWRIGHT_SERVICE_URL=${{ vars.WESTUS3_PROD_SERVICE_URL }}" >> $GITHUB_ENV
+            fi
 
           elif [[ "${{ github.event.inputs.environment }}" == "nightly" ]]; then
-            if [[ "${{ github.event.inputs.region }}" == "eastasia" ]]; then
-               echo "you selected eastasia"
+            if [[ "${{ github.event.inputs.region }}" == "eastasia" ]]; then             
               echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.EASTASIA_NIGHTLY_ACCESS_TOKEN }}" >> $GITHUB_ENV
               echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTASIA_NIGHTLY_SERVICE_URL }}" >> $GITHUB_ENV
             elif [[ "${{ github.event.inputs.region }}" == "eastus" ]]; then
@@ -69,18 +79,17 @@ jobs:
               echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTUS_NIGHTLY_SERVICE_URL }}" >> $GITHUB_ENV
             fi
          elif [[ "${{ github.event.inputs.environment }}" == "canary" ]]; then
-            if [[ "${{ github.event.inputs.region }}" == "eastasia" ]]; then
-              echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.PLAYWRIGHT_SERVICE_EASTASIA_NIGHTLY_ACCESS_TOKEN_REPORTING }}" >> $GITHUB_ENV
-              echo "PLAYWRIGHT_SERVICE_URL=${{ vars.PLAYWRIGHT_SERVICE_EASTASIA_NIGHTLY_URL }}" >> $GITHUB_ENV
-            elif [[ "${{ github.event.inputs.region }}" == "eastus" ]]; then
-              echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.PLAYWRIGHT_SERVICE_EASTUS_NIGHTLY_ACCESS_TOKEN_REPORTING }}" >> $GITHUB_ENV
-              echo "PLAYWRIGHT_SERVICE_URL=${{ vars.PLAYWRIGHT_SERVICE_EASTUS_NIGHTLY_URL }}" >> $GITHUB_ENV
+            if [[ "${{ github.event.inputs.region }}" == "eastus2euap" ]]; then
+              echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.EASTUS2EUAP_CANARY_ACCESS_TOKEN }}" >> $GITHUB_ENV
+              echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTUS2EUAP_CANARY_SERVICE_URL }}" >> $GITHUB_ENV
+            elif [[ "${{ github.event.inputs.region }}" == "central" ]]; then
+              echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.EASTUS2EUAP_CANARY_ACCESS_TOKEN }}" >> $GITHUB_ENV
+              echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTUS2EUAP_CANARY_SERVICE_URL }}" >> $GITHUB_ENV
             fi          
           else
             echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.TEST_ACCESS_TOKEN }}" >> $GITHUB_ENV
             echo "PLAYWRIGHT_SERVICE_URL=${{ vars.TEST_SERVICE_URL }}" >> $GITHUB_ENV
-          fi
-       echo "Set PLAYWRIGHT_SERVICE_URL: $PLAYWRIGHT_SERVICE_URL"
+          fi      
 
     - name: Run Playwright tests
       working-directory: Samples/GetStarted
@@ -89,7 +98,7 @@ jobs:
         PLAYWRIGHT_SERVICE_URL: ${{ env.PLAYWRIGHT_SERVICE_URL }}
         PLAYWRIGHT_SERVICE_RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}-${{ github.sha }}
         debug: MPTReporter
-      run: npx playwright test --config=playwright.service.config.ts example.spec.ts --workers=1 --retries=1
+      run: npx playwright test --config=playwright.service.config.ts example.spec.ts --workers=20 --retries=1
 
     - uses: actions/upload-artifact@v4
       if: always()
