@@ -2,8 +2,8 @@
 # This sample assumes the working directory is ./samples/get-started
 name: Get Started sample
 on:
-  push:
-    branches: [ main, master ]
+#   push:
+#     branches: [ main, master ]
 #   pull_request:
 #     branches: [ main, master ]
   workflow_dispatch:
@@ -53,13 +53,14 @@ jobs:
       run: |
        echo "Selected environment: ${{ github.event.inputs.environment }}"
        echo "Selected region: ${{ github.event.inputs.region }}"
-
-         if [[ "${{ github.event.inputs.environment }}" == "production" ]]; then
+       
+         if [[ "${{ github.event.inputs.environment }}" == "prod" ]]; then
             echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.PLAYWRIGHT_SERVICE_EASTUS_PROD_ACCESS_TOKEN_REPORTING }}" >> $GITHUB_ENV
             echo "PLAYWRIGHT_SERVICE_URL=${{ vars.PLAYWRIGHT_SERVICE_EASTUS_PROD_URL }}" >> $GITHUB_ENV
 
           elif [[ "${{ github.event.inputs.environment }}" == "nightly" ]]; then
             if [[ "${{ github.event.inputs.region }}" == "eastasia" ]]; then
+               echo "you selected eastasia"
               echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.EASTASIA_NIGHTLY_ACCESS_TOKEN }}" >> $GITHUB_ENV
               echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTASIA_NIGHTLY_SERVICE_URL }}" >> $GITHUB_ENV
             elif [[ "${{ github.event.inputs.region }}" == "eastus" ]]; then
@@ -73,8 +74,7 @@ jobs:
             elif [[ "${{ github.event.inputs.region }}" == "eastus" ]]; then
               echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.PLAYWRIGHT_SERVICE_EASTUS_NIGHTLY_ACCESS_TOKEN_REPORTING }}" >> $GITHUB_ENV
               echo "PLAYWRIGHT_SERVICE_URL=${{ vars.PLAYWRIGHT_SERVICE_EASTUS_NIGHTLY_URL }}" >> $GITHUB_ENV
-            fi
-          
+            fi          
           else
             echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.TEST_ACCESS_TOKEN }}" >> $GITHUB_ENV
             echo "PLAYWRIGHT_SERVICE_URL=${{ vars.TEST_SERVICE_URL }}" >> $GITHUB_ENV

@@ -2,10 +2,10 @@
 # This sample assumes the working directory is ./samples/get-started
 name: Get Started sample
 on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+  # push:
+  #   branches: [ main, master ]
+  # pull_request:
+  #   branches: [ main, master ]
   workflow_dispatch:
     inputs:
       environment:
