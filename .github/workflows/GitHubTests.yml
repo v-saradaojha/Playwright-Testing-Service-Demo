@@ -26,7 +26,12 @@ on:
             - eastus
             - eastus2euap
             - westeurope
-            - westus3            
+            - westus3
+      workers:
+        description: "Number of workers"
+        required: false
+        default: 20
+        type: number            
 permissions:
   id-token: write
   contents: read
@@ -98,7 +103,7 @@ jobs:
         PLAYWRIGHT_SERVICE_URL: ${{ env.PLAYWRIGHT_SERVICE_URL }}
         PLAYWRIGHT_SERVICE_RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}-${{ github.sha }}
         debug: MPTReporter
-      run: npx playwright test --config=playwright.service.config.ts example.spec.ts --workers=20 --retries=1
+      run: npx playwright test --config=playwright.service.config.ts example.spec.ts --workers= ${{ github.event.inputs.workers }} --retries=1
 
     - uses: actions/upload-artifact@v4
       if: always()
