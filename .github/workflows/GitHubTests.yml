@@ -2,10 +2,10 @@
 # This sample assumes the working directory is ./samples/get-started
 name: Get Started sample
 on:
-#   push:
-#     branches: [ main, master ]
-#   pull_request:
-#     branches: [ main, master ]
+  #   push:
+  #     branches: [ main, master ]
+  #   pull_request:
+  #     branches: [ main, master ]
   workflow_dispatch:
     inputs:
       environment:
@@ -22,22 +22,22 @@ on:
         required: false
         type: choice
         options:
-            - eastasia
-            - eastus
-            - eastus2euap
-            - westeurope
-            - westus3
+          - eastasia
+          - eastus
+          - eastus2euap
+          - westeurope
+          - westus3
       workers:
         description: "Number of workers"
         required: false
         default: 20
-        type: number            
+        type: number
 permissions:
   id-token: write
   contents: read
 jobs:
   test:
-    timeout-minutes: 120    
+    timeout-minutes: 120
     environment: ${{ github.event.inputs.environment }}
     runs-on: ubuntu-latest
     strategy:
@@ -46,70 +46,70 @@ jobs:
       #   shardIndex: [1, 2, 3, 4]
       #   shardTotal: [4]
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 20    
-   
-    - name: Install dependencies
-      working-directory: Samples/GetStarted
-      run: npm install
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
 
-    - name: Set Environment Variables Based on Input
-      run: |
-       echo "Selected environment: ${{ github.event.inputs.environment }}"
-       echo "Selected region: ${{ github.event.inputs.region }}"
-       
-         if [[ "${{ github.event.inputs.environment }}" == "prod" ]]; then
-            if [[ "${{ github.event.inputs.region }}" == "eastus" ]]; then             
-              echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.EASTUS_PROD_ACCESS_TOKEN }}" >> $GITHUB_ENV
-              echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTUS_PROD_SERVICE_URL }}" >> $GITHUB_ENV
-            elif [[ "${{ github.event.inputs.region }}" == "eastasia" ]]; then             
-              echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.EASTASIA_PROD_ACCESS_TOKEN }}" >> $GITHUB_ENV
-              echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTASIA_PROD_SERVICE_URL }}" >> $GITHUB_ENV
-            elif [[ "${{ github.event.inputs.region }}" == "westeurope" ]]; then             
-              echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.WESTEUROPE_PROD_ACCESS_TOKEN }}" >> $GITHUB_ENV
-              echo "PLAYWRIGHT_SERVICE_URL=${{ vars.WESTEUROPE_PROD_SERVICE_URL }}" >> $GITHUB_ENV
-            elif [[ "${{ github.event.inputs.region }}" == "westus3" ]]; then             
-              echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.WESTUS3_PROD_ACCESS_TOKEN }}" >> $GITHUB_ENV
-              echo "PLAYWRIGHT_SERVICE_URL=${{ vars.WESTUS3_PROD_SERVICE_URL }}" >> $GITHUB_ENV
-            fi
+      - name: Install dependencies
+        working-directory: Samples/GetStarted
+        run: npm install
 
-          elif [[ "${{ github.event.inputs.environment }}" == "nightly" ]]; then
-            if [[ "${{ github.event.inputs.region }}" == "eastasia" ]]; then             
-              echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.EASTASIA_NIGHTLY_ACCESS_TOKEN }}" >> $GITHUB_ENV
-              echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTASIA_NIGHTLY_SERVICE_URL }}" >> $GITHUB_ENV
-            elif [[ "${{ github.event.inputs.region }}" == "eastus" ]]; then
-              echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.EASTUS_NIGHTLY_ACCESS_TOKEN }}" >> $GITHUB_ENV
-              echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTUS_NIGHTLY_SERVICE_URL }}" >> $GITHUB_ENV
-            fi
-         elif [[ "${{ github.event.inputs.environment }}" == "canary" ]]; then
-            if [[ "${{ github.event.inputs.region }}" == "eastus2euap" ]]; then
-              echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.EASTUS2EUAP_CANARY_ACCESS_TOKEN }}" >> $GITHUB_ENV
-              echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTUS2EUAP_CANARY_SERVICE_URL }}" >> $GITHUB_ENV
-            elif [[ "${{ github.event.inputs.region }}" == "central" ]]; then
-              echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.EASTUS2EUAP_CANARY_ACCESS_TOKEN }}" >> $GITHUB_ENV
-              echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTUS2EUAP_CANARY_SERVICE_URL }}" >> $GITHUB_ENV
-            fi          
-          else
-            echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.TEST_ACCESS_TOKEN }}" >> $GITHUB_ENV
-            echo "PLAYWRIGHT_SERVICE_URL=${{ vars.TEST_SERVICE_URL }}" >> $GITHUB_ENV
-          fi      
+      - name: Set Environment Variables Based on Input
+        run: |
+          echo "Selected environment: ${{ github.event.inputs.environment }}"
+          echo "Selected region: ${{ github.event.inputs.region }}"
 
-    - name: Run Playwright tests
-      working-directory: Samples/GetStarted
-      env:
-        PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{ env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN }}
-        PLAYWRIGHT_SERVICE_URL: ${{ env.PLAYWRIGHT_SERVICE_URL }}
-        PLAYWRIGHT_SERVICE_RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}-${{ github.sha }}
-        debug: MPTReporter
-      run: npx playwright test --config=playwright.service.config.ts example.spec.ts --workers= ${{ github.event.inputs.workers }} --retries=1
+            if [[ "${{ github.event.inputs.environment }}" == "prod" ]]; then
+               if [[ "${{ github.event.inputs.region }}" == "eastus" ]]; then             
+                 echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.EASTUS_PROD_ACCESS_TOKEN }}" >> $GITHUB_ENV
+                 echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTUS_PROD_SERVICE_URL }}" >> $GITHUB_ENV
+               elif [[ "${{ github.event.inputs.region }}" == "eastasia" ]]; then             
+                 echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.EASTASIA_PROD_ACCESS_TOKEN }}" >> $GITHUB_ENV
+                 echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTASIA_PROD_SERVICE_URL }}" >> $GITHUB_ENV
+               elif [[ "${{ github.event.inputs.region }}" == "westeurope" ]]; then             
+                 echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.WESTEUROPE_PROD_ACCESS_TOKEN }}" >> $GITHUB_ENV
+                 echo "PLAYWRIGHT_SERVICE_URL=${{ vars.WESTEUROPE_PROD_SERVICE_URL }}" >> $GITHUB_ENV
+               elif [[ "${{ github.event.inputs.region }}" == "westus3" ]]; then             
+                 echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.WESTUS3_PROD_ACCESS_TOKEN }}" >> $GITHUB_ENV
+                 echo "PLAYWRIGHT_SERVICE_URL=${{ vars.WESTUS3_PROD_SERVICE_URL }}" >> $GITHUB_ENV
+               fi
 
-    - uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: playwright-report
-        path: Samples/GetStarted/playwright-report/
-        retention-days: 10
+             elif [[ "${{ github.event.inputs.environment }}" == "nightly" ]]; then
+               if [[ "${{ github.event.inputs.region }}" == "eastasia" ]]; then             
+                 echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.EASTASIA_NIGHTLY_ACCESS_TOKEN }}" >> $GITHUB_ENV
+                 echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTASIA_NIGHTLY_SERVICE_URL }}" >> $GITHUB_ENV
+               elif [[ "${{ github.event.inputs.region }}" == "eastus" ]]; then
+                 echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.EASTUS_NIGHTLY_ACCESS_TOKEN }}" >> $GITHUB_ENV
+                 echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTUS_NIGHTLY_SERVICE_URL }}" >> $GITHUB_ENV
+               fi
+            elif [[ "${{ github.event.inputs.environment }}" == "canary" ]]; then
+               if [[ "${{ github.event.inputs.region }}" == "eastus2euap" ]]; then
+                 echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.EASTUS2EUAP_CANARY_ACCESS_TOKEN }}" >> $GITHUB_ENV
+                 echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTUS2EUAP_CANARY_SERVICE_URL }}" >> $GITHUB_ENV
+               elif [[ "${{ github.event.inputs.region }}" == "central" ]]; then
+                 echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.EASTUS2EUAP_CANARY_ACCESS_TOKEN }}" >> $GITHUB_ENV
+                 echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTUS2EUAP_CANARY_SERVICE_URL }}" >> $GITHUB_ENV
+               fi          
+             else
+               echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.TEST_ACCESS_TOKEN }}" >> $GITHUB_ENV
+               echo "PLAYWRIGHT_SERVICE_URL=${{ vars.TEST_SERVICE_URL }}" >> $GITHUB_ENV
+             fi
 
-   
+      - name: Run Playwright tests
+        working-directory: Samples/GetStarted
+        env:
+          PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{ env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN }}
+          PLAYWRIGHT_SERVICE_URL: ${{ env.PLAYWRIGHT_SERVICE_URL }}
+          PLAYWRIGHT_SERVICE_RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}-${{ github.sha }}
+          debug: MPTReporter
+        run: |
+          WORKERS=${{ github.event.inputs.workers }}
+          npx playwright test --config=playwright.service.config.ts example.spec.ts --workers=$WORKERS --retries=1
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: Samples/GetStarted/playwright-report/
+          retention-days: 10
