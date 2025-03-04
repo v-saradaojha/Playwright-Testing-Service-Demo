@@ -32,7 +32,8 @@ permissions:
   contents: read
 jobs:
   test:
-    timeout-minutes: 120
+    timeout-minutes: 120    
+    environment: ${{ github.event.inputs.environment }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
