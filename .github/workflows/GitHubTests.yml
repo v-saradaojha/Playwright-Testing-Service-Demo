@@ -32,6 +32,11 @@ on:
         required: false
         default: 20
         type: number
+      TEST_ITERATIONS:
+        description: "Number of test iterations"
+        required: false
+        default: 1
+        type: number
 permissions:
   id-token: write
   contents: read

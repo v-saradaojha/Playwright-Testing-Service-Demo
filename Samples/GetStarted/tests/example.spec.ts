@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 
 // This sample simulates a larger test suite
 const tags = ['@smoke', '@sanity', '@issue'];
+const TEST_ITERATIONS = parseInt(process.env.TEST_ITERATIONS);
 //eastasia test//encryption on
 // const TEST_ITERATIONS = parseInt(process.env.TEST_ITERATIONS || "50");
 // for (let i = 0; i < TEST_ITERATIONS; i++) {
@@ -31,7 +32,7 @@ const tags = ['@smoke', '@sanity', '@issue'];
 //   }); 
 // }
 
-for (let i = 0; i < 20; i++) {
+for (let i = 0; i < TEST_ITERATIONS; i++) {
   let tagid = i % 3;
   test('get started link ' + i + tags[tagid], async ({ page }) => {
       await page.goto('https://playwright.dev/');
