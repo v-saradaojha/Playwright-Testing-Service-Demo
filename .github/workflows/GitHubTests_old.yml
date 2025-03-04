@@ -1,0 +1,111 @@
+# TODO: Place this file in the .github/workflows folder of your repository
+# This sample assumes the working directory is ./samples/get-started
+name: Get Started sample
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Choose the environment"
+        required: true
+        default: "nightly"
+        type: choice
+        options:
+          - prod
+          - nightly
+          - canary
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  test:
+    timeout-minutes: 120
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      # matrix:
+      #   shardIndex: [1, 2, 3, 4]
+      #   shardTotal: [4]
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 20    
+       
+    # - name: OIDC Login to Azure Public Cloud with AzPowershell (enableAzPSSession true)
+    #   uses: azure/login@v2
+    #   with:
+    #     client-id: ${{ secrets.AZURE_CLIENT_ID }}
+    #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+    #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    #     enable-AzPSSession: true
+    - name: Install dependencies
+      working-directory: Samples/GetStarted
+      run: npm install
+    
+    # - name: Install Playwright Browsers
+    #   working-directory: Samples/GetStarted
+    #   run: npx playwright install --with-deps
+
+    - name: Run Playwright tests
+      working-directory: Samples/GetStarted
+      env:
+        #Production Start
+        # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_EASTUS_PROD_ACCESS_TOKEN_REPORTING}}
+        # PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_EASTUS_PROD_URL}}
+        # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_EASTASIA_PROD_ACCESS_TOKEN_REPORTING}}
+        # PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_EASTASIA_PROD_URL}}
+        # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_WESTEUROPE_PROD_ACCESS_TOKEN_REPORTING}}
+        # PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_WESTEUROPE_PROD_URL}}
+        # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_WESTUS3_PROD_ACCESS_TOKEN_REPORTING}}
+        # PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_WESTUS3_PROD_URL}}
+        #Production End
+        #Canary Start
+        # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_EASTUS2EUAP_ACCESS_TOKEN_REPORTING}}
+        # PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_EASTUS2EUAP_URL_REPORTING}}
+        #Canary End
+        #Nightly Start
+        PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_EASTASIA_NIGHTLY_ACCESS_TOKEN_REPORTING}}
+        PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_EASTASIA_NIGHTLY_URL }}
+        # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_EASTUS_NIGHTLY_ACCESS_TOKEN_REPORTING}}
+        # PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_EASTUS_NIGHTLY_URL }}
+        #Nightly End
+
+        #TEST START
+        # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.TEST_ACCESS_TOKEN}}
+        # PLAYWRIGHT_SERVICE_URL: ${{ vars.TEST_SERVICE_URL }}
+        #TEST END
+        PLAYWRIGHT_SERVICE_RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}-${{ github.sha }}
+        debug: MPTReporter
+      # run: npx playwright test --config=playwright.service.config.ts --workers=30
+      # run: npx playwright test --config=playwright.service.config.ts example.spec.ts --workers=50 --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} 
+      run: npx playwright test --config=playwright.service.config.ts example.spec.ts --workers=1 --retries=1
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-report
+        path: Samples/GetStarted/playwright-report/
+        retention-days: 10
+
+    # - name: Comment on PR
+    #   uses: actions/github-script@v5
+    #   if: always()
+    #   with:
+    #     github-token: ${{secrets.GH_TOKEN_FOR_PR_COMMENTS}}
+    #     script: |
+    #       const issue_number = context.issue.number;
+    #       const owner = context.repo.owner;
+    #       const repo = context.repo.repo;
+    #       const body = 'See test results [here](https://playwright.dev)';
+    #       github.rest.issues.createComment({
+    #         owner,
+    #         repo,
+    #         issue_number,
+    #         body
+    #       });
+
+    # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{secrets.PLAYWRIGHT_SERVICE_EASTASIA_NIGHTLY_ACCESS_TOKEN_REPORTING}}
+    # PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_EASTASIA_NIGHTLY_URL }}
