@@ -79,6 +79,7 @@ jobs:
             echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.TEST_ACCESS_TOKEN }}" >> $GITHUB_ENV
             echo "PLAYWRIGHT_SERVICE_URL=${{ vars.TEST_SERVICE_URL }}" >> $GITHUB_ENV
           fi
+       echo "Set PLAYWRIGHT_SERVICE_URL: $PLAYWRIGHT_SERVICE_URL"
 
     - name: Run Playwright tests
       working-directory: Samples/GetStarted
