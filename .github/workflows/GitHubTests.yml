@@ -60,6 +60,10 @@ jobs:
         working-directory: Samples/GetStarted
         run: npm install
 
+      - name: Install Playwright Browsers
+        working-directory: Samples/GetStarted
+        run: npx playwright install --with-deps
+
       - name: Set Environment Variables Based on Input
         run: |
           echo "Selected environment: ${{ github.event.inputs.environment }}"
