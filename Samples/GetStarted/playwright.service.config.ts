@@ -9,7 +9,7 @@ export default defineConfig(
     runId: process.env.PLAYWRIGHT_SERVICE_RUN_ID,
     runName: "Testing Service Demo" + new Date().toLocaleString(),
     serviceAuthType: 'ACCESS_TOKEN',    
-    useCloudHostedBrowsers: true,
+    useCloudHostedBrowsers: false,
     timeout: 30000,
     os: ServiceOS.LINUX,
   }),
