@@ -71,17 +71,17 @@ jobs:
 
             if [[ "${{ github.event.inputs.environment }}" == "prod" ]]; then
                if [[ "${{ github.event.inputs.region }}" == "eastus" ]]; then             
-                 echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.EASTUS_PROD_ACCESS_TOKEN }}" >> $GITHUB_ENV
-                 echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTUS_PROD_SERVICE_URL }}" >> $GITHUB_ENV
+                 echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.EASTUS_PROD_ACCESS_TOKEN_1 }}" >> $GITHUB_ENV
+                 echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTUS_PROD_SERVICE_URL_1 }}" >> $GITHUB_ENV
                elif [[ "${{ github.event.inputs.region }}" == "eastasia" ]]; then             
-                 echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.EASTASIA_PROD_ACCESS_TOKEN }}" >> $GITHUB_ENV
-                 echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTASIA_PROD_SERVICE_URL }}" >> $GITHUB_ENV
+                 echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.EASTASIA_PROD_ACCESS_TOKEN_1 }}" >> $GITHUB_ENV
+                 echo "PLAYWRIGHT_SERVICE_URL=${{ vars.EASTASIA_PROD_SERVICE_URL_1 }}" >> $GITHUB_ENV
                elif [[ "${{ github.event.inputs.region }}" == "westeurope" ]]; then             
-                 echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.WESTEUROPE_PROD_ACCESS_TOKEN }}" >> $GITHUB_ENV
-                 echo "PLAYWRIGHT_SERVICE_URL=${{ vars.WESTEUROPE_PROD_SERVICE_URL }}" >> $GITHUB_ENV
+                 echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.WESTEUROPE_PROD_ACCESS_TOKEN_1 }}" >> $GITHUB_ENV
+                 echo "PLAYWRIGHT_SERVICE_URL=${{ vars.WESTEUROPE_PROD_SERVICE_URL_1 }}" >> $GITHUB_ENV
                elif [[ "${{ github.event.inputs.region }}" == "westus3" ]]; then             
-                 echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.WESTUS3_PROD_ACCESS_TOKEN }}" >> $GITHUB_ENV
-                 echo "PLAYWRIGHT_SERVICE_URL=${{ vars.WESTUS3_PROD_SERVICE_URL }}" >> $GITHUB_ENV
+                 echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.WESTUS3_PROD_ACCESS_TOKEN_1 }}" >> $GITHUB_ENV
+                 echo "PLAYWRIGHT_SERVICE_URL=${{ vars.WESTUS3_PROD_SERVICE_URL_1 }}" >> $GITHUB_ENV
                fi
 
              elif [[ "${{ github.event.inputs.environment }}" == "nightly" ]]; then
